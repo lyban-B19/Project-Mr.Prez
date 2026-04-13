@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A galaxy of gratitude — a tribute page for our president." />
+  <title>For Our President &mdash; Across the Stars</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500&family=Outfit:wght@600;700&family=Playfair+Display:ital,wght@1,400;1,700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ░░ CINEMATIC INTRO ░░ -->
+  <div id="intro-overlay" aria-modal="true" aria-label="Cinematic intro">
+    <canvas id="intro-canvas"></canvas>
+    <div class="cinema-bar cb-top"></div>
+    <div class="cinema-bar cb-bottom"></div>
+
+    <!-- Phase 1: Invitation text -->
+    <div id="intro-p1" class="intro-phase">
+      <p class="invite-line" id="il-1">Are you ready for a flight</p>
+      <p class="invite-line accent" id="il-2">amongst the stars?</p>
+    </div>
+
+    <!-- Phase 2: Warp messages -->
+    <div id="intro-p2" class="intro-phase">
+      <p class="warp-msg" id="wm-1">Taking you to a world of stars&hellip;</p>
+      <p class="warp-msg" id="wm-2">Words may not be enough&hellip;</p>
+      <p class="warp-msg" id="wm-3">But we had to try.</p>
+      <p class="warp-msg" id="wm-4">For someone who deserves the universe.</p>
+    </div>
+
+    <button id="intro-skip" aria-label="Skip intro">Skip &rarr;</button>
+  </div>
+
+  <!-- ░░ STARFIELD CANVAS ░░ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- ░░ NEBULA LAYERS ░░ -->
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+  <div class="nebula nebula-4"></div>
+
+  <!-- ░░ FLOATING PARTICLES ░░ -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ░░ NAVIGATION ░░ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-star">✦</span>
+      <span class="logo-text">For Our President</span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#hero" class="nav-link active">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#messages" class="nav-link">Messages</a></li>
+      <li><a href="#tribute" class="nav-link">Tribute</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ░░ HERO SECTION ░░ -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        A Universe of Gratitude
+        <span class="eyebrow-line"></span>
+      </p>
+
+      <h1 class="hero-title">
+        For
+        <span class="title-highlight">Khaled M<span id="title-i-dot">i</span>ari</span>
+        <span class="hero-nickname">&mdash;&nbsp;Mr&nbsp;Prez&nbsp;&mdash;</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Among a galaxy of people, you shone the brightest.<br />
+        This space holds our stories, our gratitude, and our love.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#messages" class="btn btn-primary" id="cta-messages">
+          <span>Read Messages</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="#about" class="btn btn-ghost" id="cta-about">Discover More</a>
+      </div>
+    </div>
+
+    <!-- Orbiting rings decoration -->
+    <div class="orbital-rings" aria-hidden="true">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="ring-center">
+        <div class="ring-glow"></div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- ░░ ABOUT SECTION ░░ -->
+  <section class="about-section" id="about">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">✦ Who He Is</span>
+        <h2 class="section-title">A Leader Written in Stars</h2>
+        <p class="section-subtitle">
+          Every constellation tells a story. Ours tells of vision, courage, and heart.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" id="stat-1">
+          <div class="stat-icon">🌌</div>
+          <div class="stat-number" data-target="100">0</div>
+          <div class="stat-label">Days of Presidency</div>
+        </div>
+        <div class="stat-card" id="stat-2">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-number" data-target="47">0</div>
+          <div class="stat-label">Initiatives Launched</div>
+        </div>
+        <div class="stat-card" id="stat-3">
+          <div class="stat-icon">🚀</div>
+          <div class="stat-number" data-target="200">0</div>
+          <div class="stat-label">Lives Impacted</div>
+        </div>
+        <div class="stat-card" id="stat-4">
+          <div class="stat-icon">💜</div>
+          <div class="stat-number" data-target="1">0</div>
+          <div class="stat-label">Incredible President</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ MESSAGES SECTION ░░ -->
+  <section class="messages-section" id="messages">
+    <div class="section-container">
+
+      <div class="section-header">
+        <span class="section-tag">✦ From the Galaxy</span>
+        <h2 class="section-title">Catch a Star</h2>
+        <p class="section-subtitle">
+          Someone out there has something they&rsquo;d like you to hear.
+        </p>
+      </div>
+
+      <!-- ── STAR CATCHER ── -->
+      <div class="star-catcher" id="star-catcher">
+
+        <div class="catcher-main">
+          <!-- Sky stage: comets fall through here -->
+          <div class="sky-stage" id="sky-stage">
+            <div class="sky-grid-line sl-1"></div>
+            <div class="sky-grid-line sl-2"></div>
+            <div class="impact-glow" id="impact-glow"></div>
+            <div class="viewfinder-ui" aria-hidden="true">
+              <div class="vf-corner vfc-1"></div>
+              <div class="vf-corner vfc-2"></div>
+              <div class="vf-corner vfc-3"></div>
+              <div class="vf-corner vfc-4"></div>
+              <div class="vf-rec">REC ●</div>
+              <div class="vf-data">DIST: 4.2 LY</div>
+            </div>
+          </div>
+
+          <!-- Message appears here after catching -->
+          <div class="caught-display" id="caught-display">
+            <div class="caught-card" id="caught-card" aria-live="polite">
+              <span class="caught-deco" aria-hidden="true">✦</span>
+              <p class="caught-text" id="caught-text"></p>
+              <span class="caught-from">— Anonymous &nbsp;✧</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="catcher-controls">
+          <button class="catch-btn" id="catch-btn">
+            <span class="catch-star-icon" id="catch-star-icon" aria-hidden="true">✦</span>
+            <span id="catch-label">Catch a star?</span>
+          </button>
+          <p class="catch-progress" id="catch-progress"></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ TRIBUTE SECTION ░░ -->
+  <section class="tribute-section" id="tribute">
+    <div class="section-container">
+      <div class="tribute-inner">
+        <div class="tribute-quote-mark">&ldquo;</div>
+        <blockquote class="tribute-quote">
+          A great leader doesn&apos;t just point to the stars&mdash;<br />
+          they help you believe you can reach them.
+        </blockquote>
+        <p class="tribute-attribution">— With love, from all of us</p>
+
+        <div class="tribute-stars" aria-hidden="true">
+          <span class="ts ts-1">✦</span>
+          <span class="ts ts-2">✧</span>
+          <span class="ts ts-3">✦</span>
+          <span class="ts ts-4">✧</span>
+          <span class="ts ts-5">✦</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="site-footer">
+    <div class="footer-stars" aria-hidden="true">
+      <span>✦</span><span>✧</span><span>✦</span>
+    </div>
+    <p class="footer-text">Made with ♡ for our president &mdash; The Graphic Design Club 2026</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
