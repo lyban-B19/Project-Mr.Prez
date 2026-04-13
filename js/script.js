@@ -166,10 +166,15 @@
 
 // ── COUNTER ANIMATION ─────────────────────────────────────
 (function initCounters() {
-  // Dynamic "Days of Leadership" calculation
-  const startDate = new Date('2025-08-01');
-  const today = new Date();
-  const diffTime = Math.max(0, today - startDate);
+  // Dynamic "Days of Leadership" calculation: Aug 1, 2025 - Current
+  const start = new Date('2025-08-01T00:00:00');
+  const now = new Date();
+  
+  // Normalize both to midnight to count pure days
+  const d1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  const diffTime = Math.max(0, d2 - d1);
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   const leadCounter = document.querySelector('#stat-1 .stat-number');
@@ -253,25 +258,42 @@
       "Thank you for being you"
     ],
     [
-      "person4"
+      "My brother from another mother, I still remember the first time we met in 10th grade right after the online classes ended.",
+      "Back then, I never thought that you would become one of my best friends, or that you’d be one of the main reasons I chose this uni.",
+      "I just want to say thank you for everything from your leadership at RIT to being the brother I needed most when times were tough. Inshallah this friendship will last forever.",
+      "Thank you, even though it doesn't reflect the weight of your brotherhood."
     ],
     [
-      "person10"
+      "We've had our differences but I am glad that I was able to join the club under your presidency allowing me to start a new chapter in my life.",
+      "Thank you"
     ],
     [
-      "person5"
+      "To Khaled, President of RIT’s Graphic Design Club, and a brother from another mother:",
+      "Thank you for all the work you put in. From sorting out every little chaos that pops up to always having my back, you've poured real effort into this club and turned it into something solid and enjoyable for all of us.",
+      "You’ve made everything smoother and way more fun for all of us. I'm glad you're the one steering the ship",
+      "Honestly, I'm even luckier to have you as a real friend."
     ],
     [
-      "person6"
+      "Behind the great and humble leader you are today is a great and humble friend, one you strive to be to anyone.",
+      "You bring out the best in people, like you brought out the best in me. I never sought validation, yet I got it anyway, and believe me; you have reached so many hearts.",
+      "Keep going, Mr. Prez"
     ],
     [
-      "person7"
+      "I don't think anyone in the club can imagine GDC to be where it is without you, or talk about GDC without instantly mentioning you.",
+      "Ofcourse everyone puts in their effort, but it takes an amazing leader as yourself to truly bring it to life.",
+      "I love how you're always motivating and encouraging everyone, and alwayss whipping out new stuff to make our work even a tad bit easier.",
+      "I genuinely dont think any other president out there goes to such lengths for their club members. Youuu are unrivaled and I wish you keep thriving!!",
+      " I will always take great pride in knowing I have such an amazing person to call as President of my club. May Allah shower you with even more blessings and grant you even greater success ✨✨"
+
     ],
     [
-      "person8"
+      "Hello Khaled",
+      "I hope you have many memorable, warm and fulfilling experiences ahead, just like how you created the vibe and experience for us club members.",
+      "Wishing you the best for your future endeavors."
     ],
     [
-      "person9"
+      "Khaled, the club has seen major success this year, and I believe that YOU were the biggest factor to its success.",
+      "Thank you"
     ],
   ];
 
@@ -301,39 +323,57 @@
   sectionObs.observe(section);
 
   // ── Cinematic Decode Effect ──
-  // paragraphs = array of strings; they are joined and typed as one continuous flow
+  // Each paragraph types out sequentially into its own element.
+  // The final paragraph gets the accent color class.
   function decodeText(container, paragraphs) {
     container.innerHTML = '';
 
-    const fullText = paragraphs.join('\n\n');
-    const el = document.createElement('p');
-    el.classList.add('caught-para');
-    container.appendChild(el);
+    // The scrollable ancestor is .caught-display
+    const scrollPane = container.closest('.caught-display');
 
-    let i = 0;
-    function type() {
-      if (i < fullText.length) {
-        el.textContent += fullText.charAt(i++);
-        setTimeout(type, 20);
+    let pIdx = 0;
+
+    function typeNextParagraph() {
+      if (pIdx >= paragraphs.length) return;
+
+      const isLast = pIdx === paragraphs.length - 1;
+      const el = document.createElement('p');
+      el.classList.add(isLast ? 'caught-para-last' : 'caught-para');
+      if (pIdx > 0) el.style.marginTop = '0.9em';
+      container.appendChild(el);
+
+      const text = paragraphs[pIdx];
+      let charIdx = 0;
+
+      function type() {
+        if (charIdx < text.length) {
+          el.textContent += text.charAt(charIdx++);
+          // Keep scroll pinned to the bottom as text types out
+          if (scrollPane) scrollPane.scrollTop = scrollPane.scrollHeight;
+          setTimeout(type, 22);
+        } else {
+          pIdx++;
+          // Small pause between paragraphs
+          setTimeout(typeNextParagraph, 180);
+        }
       }
+      type();
     }
-    type();
+
+    typeNextParagraph();
   }
 
-  // ── Launch a comet across the sky stage ──
+  // ── Launch a comet straight down the sky stage ──
   function launchComet() {
     const comet = document.createElement('div');
     comet.classList.add('comet');
 
-    const startX = 12 + Math.random() * 76;       // 12–88 % horizontal
-    const driftX = (Math.random() - 0.5) * 160;    // wider diagonal
-    const angle = (driftX / 160) * 15;            // slightly tilt the comet
-    const fallDist = (skyStage.offsetHeight || 420) + 140;
+    // Random horizontal position, but falls dead straight
+    const startX = 15 + Math.random() * 70;         // 15–85% horizontal
+    const fallDist = (skyStage.offsetHeight || 480) + 160;
 
     comet.style.left = `${startX}%`;
-    comet.style.setProperty('--drift-x', `${driftX}px`);
     comet.style.setProperty('--fall-dist', `${fallDist}px`);
-    comet.style.setProperty('--comet-angle', `${angle}deg`);
 
     skyStage.appendChild(comet);
     return comet;
@@ -589,6 +629,8 @@
     overlay.style.transition = 'opacity 1.5s ease';
     overlay.style.opacity = '0';
     document.body.style.overflow = '';
+    // Force top of page on reveal
+    window.scrollTo(0, 0);
     setTimeout(() => overlay.remove(), 1550);
   }
 
