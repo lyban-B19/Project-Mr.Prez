@@ -943,6 +943,17 @@ body {
   margin-bottom: 24px;
 }
 
+.caught-para {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  color: var(--stardust);
+  line-height: 1.85;
+  margin: 0;
+  white-space: pre-line;
+}
+
+
 .caught-from {
   font-size: 0.8rem;
   letter-spacing: 0.14em;

@@ -5,12 +5,12 @@
 // ── STARFIELD ─────────────────────────────────────────────
 (function initStarfield() {
   const canvas = document.getElementById('starfield');
-  const ctx    = canvas.getContext('2d');
-  let stars    = [];
+  const ctx = canvas.getContext('2d');
+  let stars = [];
   let W, H;
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
+    W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
   }
 
@@ -22,9 +22,9 @@
     stars = [];
     for (let i = 0; i < count; i++) {
       stars.push({
-        x:     randomBetween(0, W),
-        y:     randomBetween(0, H),
-        r:     randomBetween(0.3, 1.8),
+        x: randomBetween(0, W),
+        y: randomBetween(0, H),
+        r: randomBetween(0.3, 1.8),
         alpha: randomBetween(0.2, 1),
         speed: randomBetween(0.0003, 0.002),
         phase: randomBetween(0, Math.PI * 2),
@@ -75,9 +75,9 @@
     const p = document.createElement('div');
     p.classList.add('particle');
 
-    const size     = Math.random() * 3 + 1;
-    const left     = Math.random() * 100;
-    const delay    = Math.random() * 18;
+    const size = Math.random() * 3 + 1;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 18;
     const duration = Math.random() * 15 + 12;
 
     p.style.cssText = `
@@ -96,10 +96,10 @@
 
 // ── NAVBAR SCROLL ─────────────────────────────────────────
 (function initNavbar() {
-  const navbar    = document.getElementById('navbar');
+  const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('nav-toggle');
-  const navLinks  = document.getElementById('nav-links');
-  const links     = navLinks.querySelectorAll('.nav-link');
+  const navLinks = document.getElementById('nav-links');
+  const links = navLinks.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
@@ -134,9 +134,9 @@
   const indicator = document.getElementById('scroll-indicator');
   window.addEventListener('scroll', () => {
     const gone = window.scrollY > 60;
-    indicator.style.opacity       = gone ? '0' : '1';
+    indicator.style.opacity = gone ? '0' : '1';
     indicator.style.pointerEvents = gone ? 'none' : 'auto';
-    indicator.style.transition    = 'opacity 0.5s ease';
+    indicator.style.transition = 'opacity 0.5s ease';
   }, { passive: true });
 })();
 
@@ -153,7 +153,7 @@
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
-        const idx      = siblings.indexOf(entry.target);
+        const idx = siblings.indexOf(entry.target);
         setTimeout(() => entry.target.classList.add('visible'), idx * 90);
         observer.unobserve(entry.target);
       }
@@ -168,24 +168,24 @@
 (function initCounters() {
   // Dynamic "Days of Leadership" calculation
   const startDate = new Date('2025-08-01');
-  const today     = new Date();
-  const diffTime  = Math.max(0, today - startDate);
-  const diffDays  = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  
+  const today = new Date();
+  const diffTime = Math.max(0, today - startDate);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
   const leadCounter = document.querySelector('#stat-1 .stat-number');
   if (leadCounter) leadCounter.dataset.target = diffDays;
 
   const counters = document.querySelectorAll('.stat-number[data-target]');
 
   function animateCounter(el) {
-    const target   = +el.dataset.target;
+    const target = +el.dataset.target;
     const duration = 1600;
-    const start    = performance.now();
+    const start = performance.now();
 
     function step(now) {
-      const elapsed  = now - start;
+      const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
       el.textContent = Math.round(eased * target);
       if (progress < 1) requestAnimationFrame(step);
     }
@@ -211,7 +211,7 @@
   const nebulae = document.querySelectorAll('.nebula');
 
   window.addEventListener('mousemove', e => {
-    const cx = (e.clientX / window.innerWidth  - 0.5) * 2;
+    const cx = (e.clientX / window.innerWidth - 0.5) * 2;
     const cy = (e.clientY / window.innerHeight - 0.5) * 2;
 
     nebulae.forEach((n, i) => {
@@ -226,33 +226,69 @@
 (function initStarCatcher() {
 
   // Hard-coded anonymous messages (shuffled each visit)
+  // Each message is an ARRAY of paragraph strings.
+  // Add as many paragraphs as you like — each becomes its own <p> block.
   const MESSAGES = [
-    "You made every room feel lighter just by walking in. Thank you for being our anchor.",
-    "The way you listened — really listened — made all the difference. We didn't just feel heard, we felt seen.",
-    "You carried so much on your shoulders and never let it show. That's not a small thing. That's everything.",
-    "I used to dread our meetings. Then you came along and somehow turned them into the highlight of my week.",
-    "You led with your heart first. That's rare, Khaled. Please don't ever stop.",
-    "The quiet things you did — the ones nobody noticed — those were actually the most impressive.",
-    "A year from now, a decade from now, I'll still be saying: I once had a leader like Khaled. That's your legacy.",
-    "You always found a way to make everyone's win feel like a shared win. That is a gift not everyone has.",
-    "Thank you for the late nights you took on so we wouldn't have to. We noticed. We always noticed.",
-    "You made us believe this little group of ours could do something that actually mattered. We still believe it.",
+    [
+      "Hey Khaled!",
+      "I just wanted to say thank you for all the effort you put into the GDC.",
+      "The events you organize are always really creative, and it truly shows how much work you put in.",
+      "I also really appreciate how understanding and respectful you are as a president. You always take everyone’s well-being into consideration, which makes the club feel comfortable for all of us. You’ve made things a lot easier for everyone, and it doesn’t go unnoticed, So ..",
+      "THANKYOU!!"
+    ],
+    [
+      "Khaled- you are an amazing President for the club and an inspiration for many.",
+      "GD club was the silver lining for this semester for me, as it was really hard- doing what I love, which was designing and being appreciated for it, helped me even more!",
+      "May God bless you 💖"
+    ],
+    [
+      "Kind Sir",
+      "You're a great leader & great person, you ensured GD club was a safe space for everyone.",
+      "you carried the weight none of us saw, and still managed to keep that sunshine energy.",
+      "you ensured we were heard and seen, that we were cared for and most importantly, you made us feel like we belonged.",
+      "A year from now, a decade from now, I'll still be saying: I once had a leader like Khaled.",
+      "That's your legacy.",
+      " ~ ~ ~ ",
+      "Thank you for making GDC the rose amongst the thorns",
+      "Thank you for being you"
+    ],
+    [
+      "person4"
+    ],
+    [
+      "person10"
+    ],
+    [
+      "person5"
+    ],
+    [
+      "person6"
+    ],
+    [
+      "person7"
+    ],
+    [
+      "person8"
+    ],
+    [
+      "person9"
+    ],
   ];
 
   // Shuffle so order is different each visit
   const pool = [...MESSAGES].sort(() => Math.random() - 0.5);
-  let index  = 0;
-  let busy   = false;
+  let index = 0;
+  let busy = false;
 
-  const skyStage   = document.getElementById('sky-stage');
+  const skyStage = document.getElementById('sky-stage');
   const impactGlow = document.getElementById('impact-glow');
   const caughtCard = document.getElementById('caught-card');
   const caughtText = document.getElementById('caught-text');
-  const catchBtn   = document.getElementById('catch-btn');
+  const catchBtn = document.getElementById('catch-btn');
   const catchLabel = document.getElementById('catch-label');
-  const catchIcon  = document.getElementById('catch-star-icon');
-  const catchProg  = document.getElementById('catch-progress');
-  const catcher    = document.getElementById('star-catcher');
+  const catchIcon = document.getElementById('catch-star-icon');
+  const catchProg = document.getElementById('catch-progress');
+  const catcher = document.getElementById('star-catcher');
 
   // Reveal the widget when the section scrolls into view
   const section = document.getElementById('messages');
@@ -263,18 +299,22 @@
     }
   }, { threshold: 0.25 });
   sectionObs.observe(section);
-  
+
   // ── Cinematic Decode Effect ──
-  function decodeText(el, text) {
-    el.textContent = "";
+  // paragraphs = array of strings; they are joined and typed as one continuous flow
+  function decodeText(container, paragraphs) {
+    container.innerHTML = '';
+
+    const fullText = paragraphs.join('\n\n');
+    const el = document.createElement('p');
+    el.classList.add('caught-para');
+    container.appendChild(el);
+
     let i = 0;
-    const speed = 25; // ms per char
-    
     function type() {
-      if (i < text.length) {
-        el.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
+      if (i < fullText.length) {
+        el.textContent += fullText.charAt(i++);
+        setTimeout(type, 20);
       }
     }
     type();
@@ -285,14 +325,14 @@
     const comet = document.createElement('div');
     comet.classList.add('comet');
 
-    const startX   = 12 + Math.random() * 76;       // 12–88 % horizontal
-    const driftX   = (Math.random() - 0.5) * 160;    // wider diagonal
-    const angle    = (driftX / 160) * 15;            // slightly tilt the comet
+    const startX = 12 + Math.random() * 76;       // 12–88 % horizontal
+    const driftX = (Math.random() - 0.5) * 160;    // wider diagonal
+    const angle = (driftX / 160) * 15;            // slightly tilt the comet
     const fallDist = (skyStage.offsetHeight || 420) + 140;
 
     comet.style.left = `${startX}%`;
-    comet.style.setProperty('--drift-x',    `${driftX}px`);
-    comet.style.setProperty('--fall-dist',  `${fallDist}px`);
+    comet.style.setProperty('--drift-x', `${driftX}px`);
+    comet.style.setProperty('--fall-dist', `${fallDist}px`);
     comet.style.setProperty('--comet-angle', `${angle}deg`);
 
     skyStage.appendChild(comet);
@@ -333,14 +373,14 @@
         // Update controls after card has partially bloomed
         setTimeout(() => {
           if (index >= pool.length) {
-            catchLabel.textContent  = "That's all the stars for tonight";
+            catchLabel.textContent = "That's all the stars for tonight";
             catchIcon.style.display = 'none';
             catchBtn.classList.add('finished');
-            catchProg.textContent   = `You've caught all ${pool.length} stars ✧`;
+            catchProg.textContent = `You've caught all ${pool.length} stars ✧`;
           } else {
             catchLabel.textContent = 'Catch another one?';
-            catchProg.textContent  = `${index} of ${pool.length} stars caught`;
-            catchBtn.disabled      = false;
+            catchProg.textContent = `${index} of ${pool.length} stars caught`;
+            catchBtn.disabled = false;
           }
           busy = false;
         }, 350);
@@ -355,23 +395,23 @@
 
 // ── CINEMATIC INTRO ───────────────────────────────────────
 (function initIntro() {
-  const overlay  = document.getElementById('intro-overlay');
+  const overlay = document.getElementById('intro-overlay');
   if (!overlay) return;
 
-  const canvas   = document.getElementById('intro-canvas');
-  const ctx      = canvas.getContext('2d');
-  const cbTop    = overlay.querySelector('.cb-top');
+  const canvas = document.getElementById('intro-canvas');
+  const ctx = canvas.getContext('2d');
+  const cbTop = overlay.querySelector('.cb-top');
   const cbBottom = overlay.querySelector('.cb-bottom');
   const invLines = overlay.querySelectorAll('.invite-line');
   const warpMsgs = overlay.querySelectorAll('.warp-msg');
-  const skipBtn  = document.getElementById('intro-skip');
+  const skipBtn = document.getElementById('intro-skip');
 
   let W, H, animating = true, raf;
   let warpSpeed = 0;
   let stars = [];
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
+    W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
   }
   resize();
@@ -380,12 +420,12 @@
     stars = [];
     for (let i = 0; i < 160; i++) {
       stars.push({
-        x:    Math.random() * W,
-        y:    Math.random() * H,
-        spd:  0.2 + Math.random() * 1.0,
-        alp:  0.15 + Math.random() * 0.45,
-        w:    0.2 + Math.random() * 0.9,
-        col:  Math.random() < 0.4 ? (Math.random() < 0.5 ? '180,150,255' : '0,210,255') : '210,200,255',
+        x: Math.random() * W,
+        y: Math.random() * H,
+        spd: 0.2 + Math.random() * 1.0,
+        alp: 0.15 + Math.random() * 0.45,
+        w: 0.2 + Math.random() * 0.9,
+        col: Math.random() < 0.4 ? (Math.random() < 0.5 ? '180,150,255' : '0,210,255') : '210,200,255',
       });
     }
   }
@@ -399,7 +439,7 @@
     ctx.fillRect(0, 0, W, H);
 
     stars.forEach(s => {
-      const vel   = s.spd * (1 + warpSpeed * 7);
+      const vel = s.spd * (1 + warpSpeed * 7);
       s.y -= vel;
       if (s.y < -4) { s.y = H + 4; s.x = Math.random() * W; }
 
@@ -408,9 +448,9 @@
         const g = ctx.createLinearGradient(s.x, s.y + trail, s.x, s.y);
         g.addColorStop(0, 'transparent');
         g.addColorStop(0.4, `rgba(${s.col},${(s.alp * 0.25).toFixed(2)})`);
-        g.addColorStop(1,   `rgba(${s.col},${(s.alp * 0.7).toFixed(2)})`);
+        g.addColorStop(1, `rgba(${s.col},${(s.alp * 0.7).toFixed(2)})`);
         ctx.strokeStyle = g;
-        ctx.lineWidth   = s.w;
+        ctx.lineWidth = s.w;
         ctx.beginPath();
         ctx.moveTo(s.x, s.y + trail);
         ctx.lineTo(s.x, s.y);
@@ -434,7 +474,7 @@
     const from = warpSpeed, t0 = performance.now();
     return new Promise(r => {
       (function tick(now) {
-        const t   = Math.min((now - t0) / ms, 1);
+        const t = Math.min((now - t0) / ms, 1);
         warpSpeed = from + (to - from) * (1 - Math.pow(1 - t, 3));
         t < 1 ? requestAnimationFrame(tick) : r();
       })(t0);
@@ -455,7 +495,7 @@
   function runFallingStarTransition(targetX, targetY) {
     return new Promise(r => {
       let phase = 'blackout';
-      let t0    = performance.now();
+      let t0 = performance.now();
       let starY = -30;
       let bloomR = 0;
 
@@ -473,7 +513,7 @@
         } else if (phase === 'falling') {
           // Gentle fall over 4.4s with ease-in-out
           const p = Math.min(elapsed / 4400, 1);
-          const e = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2) / 2;
+          const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
           starY = -30 + (targetY + 30) * e;
 
           // Soft persist — draws gentle trail
@@ -493,9 +533,9 @@
 
           // Soft outer glow
           const glow = ctx.createRadialGradient(targetX, starY, 0, targetX, starY, 24);
-          glow.addColorStop(0,    'rgba(255,255,255,0.88)');
+          glow.addColorStop(0, 'rgba(255,255,255,0.88)');
           glow.addColorStop(0.35, 'rgba(205,170,255,0.45)');
-          glow.addColorStop(1,    'transparent');
+          glow.addColorStop(1, 'transparent');
           ctx.fillStyle = glow;
           ctx.beginPath();
           ctx.arc(targetX, starY, 24, 0, Math.PI * 2);
@@ -512,19 +552,19 @@
 
         } else if (phase === 'bloom') {
           // Soft radial bloom expands & fades over 1.5s
-          const p     = Math.min(elapsed / 1500, 1);
+          const p = Math.min(elapsed / 1500, 1);
           const eased = 1 - Math.pow(1 - p, 2);
-          bloomR      = eased * Math.hypot(W, H) * 0.9;
-          const bA    = 1 - p;
+          bloomR = eased * Math.hypot(W, H) * 0.9;
+          const bA = 1 - p;
 
           ctx.fillStyle = `rgba(2, 0, 12, ${(0.55 + p * 0.35).toFixed(2)})`;
           ctx.fillRect(0, 0, W, H);
 
           const bloom = ctx.createRadialGradient(targetX, targetY, 0, targetX, targetY, bloomR);
-          bloom.addColorStop(0,   `rgba(225,195,255,${(bA * 0.9).toFixed(2)})`);
+          bloom.addColorStop(0, `rgba(225,195,255,${(bA * 0.9).toFixed(2)})`);
           bloom.addColorStop(0.3, `rgba(150,100,225,${(bA * 0.45).toFixed(2)})`);
           bloom.addColorStop(0.7, `rgba(70,20,130,${(bA * 0.18).toFixed(2)})`);
-          bloom.addColorStop(1,   'transparent');
+          bloom.addColorStop(1, 'transparent');
           ctx.fillStyle = bloom;
           ctx.beginPath();
           ctx.arc(targetX, targetY, bloomR, 0, Math.PI * 2);
@@ -547,7 +587,7 @@
   // ── Fade overlay, page blooms through ──
   function fadeOutOverlay() {
     overlay.style.transition = 'opacity 1.5s ease';
-    overlay.style.opacity    = '0';
+    overlay.style.opacity = '0';
     document.body.style.overflow = '';
     setTimeout(() => overlay.remove(), 1550);
   }
