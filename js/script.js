@@ -169,11 +169,11 @@
   // Dynamic "Days of Leadership" calculation: Aug 1, 2025 - Current
   const start = new Date('2025-08-01T00:00:00');
   const now = new Date();
-  
+
   // Normalize both to midnight to count pure days
   const d1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
   const d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  
+
   const diffTime = Math.max(0, d2 - d1);
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
@@ -295,6 +295,12 @@
       "Khaled, the club has seen major success this year, and I believe that YOU were the biggest factor to its success.",
       "Thank you"
     ],
+    [
+      "I wanted to thank you Khaled for being such a supportive president.",
+      "It’s awesome how you appreciate everyone’s hard work and always go the extra mile for us.",
+      "Plus, keeping the club so organized and creating those AI tools has made things so much easier at RIT…",
+      "It's seriously impressive!"
+    ]
   ];
 
   // Shuffle so order is different each visit
@@ -322,11 +328,14 @@
   }, { threshold: 0.25 });
   sectionObs.observe(section);
 
+  let typingSession = 0;
+
   // ── Cinematic Decode Effect ──
   // Each paragraph types out sequentially into its own element.
   // The final paragraph gets the accent color class.
   function decodeText(container, paragraphs) {
     container.innerHTML = '';
+    const currentSession = ++typingSession;
 
     // The scrollable ancestor is .caught-display
     const scrollPane = container.closest('.caught-display');
@@ -334,7 +343,7 @@
     let pIdx = 0;
 
     function typeNextParagraph() {
-      if (pIdx >= paragraphs.length) return;
+      if (pIdx >= paragraphs.length || currentSession !== typingSession) return;
 
       const isLast = pIdx === paragraphs.length - 1;
       const el = document.createElement('p');
@@ -342,19 +351,41 @@
       if (pIdx > 0) el.style.marginTop = '0.9em';
       container.appendChild(el);
 
-      const text = paragraphs[pIdx];
+      let text = paragraphs[pIdx];
+      if (pIdx === 0) text = `“${text}`;
+      if (isLast) text = `${text}”`;
       let charIdx = 0;
 
       function type() {
+        if (currentSession !== typingSession) return;
+
         if (charIdx < text.length) {
-          el.textContent += text.charAt(charIdx++);
-          // Keep scroll pinned to the bottom as text types out
-          if (scrollPane) scrollPane.scrollTop = scrollPane.scrollHeight;
-          setTimeout(type, 22);
+          el.classList.add('typing');
+          const char = text.charAt(charIdx++);
+          if (isLast && charIdx === text.length) {
+            const span = document.createElement('span');
+            span.style.color = 'var(--white)';
+            span.style.textShadow = 'none';
+            span.textContent = char;
+            el.appendChild(span);
+          } else {
+            el.appendChild(document.createTextNode(char));
+          }
+
+          // Smoothly chase the scroll bottom
+          if (scrollPane) {
+            const targetScroll = scrollPane.scrollHeight - scrollPane.clientHeight;
+            if (scrollPane.scrollTop < targetScroll) {
+              // Add a tiny bit of "chase" logic for smoothness
+              scrollPane.scrollTop += (targetScroll - scrollPane.scrollTop) * 0.15;
+            }
+          }
+          setTimeout(type, 40);
         } else {
+          el.classList.remove('typing');
           pIdx++;
           // Small pause between paragraphs
-          setTimeout(typeNextParagraph, 180);
+          setTimeout(typeNextParagraph, 450);
         }
       }
       type();
@@ -449,6 +480,7 @@
   let W, H, animating = true, raf;
   let warpSpeed = 0;
   let stars = [];
+  let introSkipped = false;
 
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -625,7 +657,10 @@
   }
 
   // ── Fade overlay, page blooms through ──
-  function fadeOutOverlay() {
+  function fadeOutOverlay(isTimelineEnd = false) {
+    // If skip was pressed, don't let the timeline call this again
+    if (isTimelineEnd && introSkipped) return;
+
     overlay.style.transition = 'opacity 1.5s ease';
     overlay.style.opacity = '0';
     document.body.style.overflow = '';
@@ -635,42 +670,46 @@
   }
 
   // Skip — instant exit
-  skipBtn.addEventListener('click', () => { stopDrawLoop(); fadeOutOverlay(); });
+  skipBtn.addEventListener('click', () => {
+    introSkipped = true;
+    stopDrawLoop();
+    fadeOutOverlay();
+  });
   document.body.style.overflow = 'hidden';
 
   // ── Cinematic timeline ──
   (async () => {
     // Phase 1 — invitation fades in, staggered
-    await wait(500);
+    await wait(500); if (introSkipped) return;
     invLines[0].classList.add('visible');
-    await wait(620);
+    await wait(620); if (introSkipped) return;
     invLines[1].classList.add('visible');
 
     // Letterbox bars + gentle drift
-    await wait(3300);          // +2s
+    await wait(3300); if (introSkipped) return;
     cbTop.classList.add('open');
     cbBottom.classList.add('open');
     lerpWarp(0.12, 1000);
 
     // Invitation fades out
-    await wait(2950);          // +2s
+    await wait(2950); if (introSkipped) return;
     invLines.forEach(l => l.classList.remove('visible'));
-    await wait(600);
+    await wait(600); if (introSkipped) return;
 
     // Warp rises to a soft cinematic drift
     lerpWarp(0.48, 3000);
-    await wait(3000);          // +2s
+    await wait(3000); if (introSkipped) return;
 
     // Four cinematic messages glow in
-    await showMsg(warpMsgs[0], 3400); // +2s hold
-    await showMsg(warpMsgs[1], 3400); // +2s hold
-    await showMsg(warpMsgs[2], 3250); // +2s hold
-    await showMsg(warpMsgs[3], 3250); // +2s hold
+    if (!introSkipped) await showMsg(warpMsgs[0], 3400);
+    if (!introSkipped) await showMsg(warpMsgs[1], 3400);
+    if (!introSkipped) await showMsg(warpMsgs[2], 3250);
+    if (!introSkipped) await showMsg(warpMsgs[3], 3250);
 
     // Warp eases back to stillness
-    await wait(350);
+    await wait(350); if (introSkipped) return;
     lerpWarp(0, 1100);
-    await wait(2900);          // +2s
+    await wait(2900); if (introSkipped) return;
 
     // Hand off to falling-star transition
     stopDrawLoop();
@@ -680,9 +719,46 @@
     const dotY = H / 2;
 
     // The star falls → blooms → page reveals
-    await runFallingStarTransition(dotX, dotY);
-    fadeOutOverlay();
+    if (!introSkipped) await runFallingStarTransition(dotX, dotY);
+    fadeOutOverlay(true);
   })();
 
   window.addEventListener('resize', () => { resize(); buildStars(); });
+})();
+
+
+// ── CUSTOM CINEMATIC CURSOR ──────────────────────────────
+(function initCustomCursor() {
+  const dot = document.getElementById('cursor-dot');
+  const glow = document.getElementById('cursor-glow');
+  let mouseX = 0, mouseY = 0;
+  let dotX = 0, dotY = 0;
+  let glowX = 0, glowY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function tick() {
+    // Smooth lerp for dot
+    dotX += (mouseX - dotX) * 0.25;
+    dotY += (mouseY - dotY) * 0.25;
+    dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+
+    // Slower lerp for glow to create "lagging" trail effect
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    glow.style.transform = `translate(${glowX}px, ${glowY}px)`;
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Handle pointer states
+  const interactables = 'a, button, .stat-card, .nav-toggle, .btn';
+  document.querySelectorAll(interactables).forEach(el => {
+    el.addEventListener('mouseenter', () => dot.classList.add('hover'));
+    el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
+  });
 })();
