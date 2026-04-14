@@ -300,6 +300,11 @@
       "It’s awesome how you appreciate everyone’s hard work and always go the extra mile for us.",
       "Plus, keeping the club so organized and creating those AI tools has made things so much easier at RIT…",
       "It's seriously impressive!"
+    ],
+    [
+      "Hello Khaled,",
+      "I appreciate your leadership and all the work you do to ensure that the graphic design club thrives.",
+      "Thank you for leading this amazing club!"
     ]
   ];
 
