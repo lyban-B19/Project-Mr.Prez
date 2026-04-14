@@ -316,7 +316,7 @@
       "Most people wouldn’t have handled half of what you did, Khaled.",
       "You had so much on your shoulders and somehow you still made sure we were all okay first. You carried things so quietly that we almost forgot how heavy it all was.",
       "That kind of selflessness doesn’t go unnoticed. It’s the reason some of us look up to you more than you’ll ever know.",
-      "I hope one day you get back even a fraction of what you gave us.",
+      "Even though it was never expressed, having a leader like you has been a privilege.",
       "May Allah reward you with tenfold of everything you gave us and more."
     ],
     [
