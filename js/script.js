@@ -332,6 +332,18 @@
       "It's been great working with you, and I truly appreciate the direction and clarity you've brought to the club.",
       "I'm really glad to see how many successful collaborations and events have come to life under your leadership.",
       "Looking forward to seeing the club grow even more. ✨"
+    ],
+    [
+      "Hey! I just wanted to take a moment to say thank you for everything you do as president of the Graphic Design Club.",
+      "You've been so nice, understanding, and accommodating, and your leadership really makes a difference.",
+      "It's genuinely a pleasure being part of a club led by someone like you! 🎨"
+    ],
+    [
+      "Hello Khaled Miari.",
+      "Trust me",
+      "This",
+      "Is a situtaion",
+      "Where more is less."
     ]
   ];
 
