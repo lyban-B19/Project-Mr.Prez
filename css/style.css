@@ -164,9 +164,9 @@ body {
 }
 
 .navbar.scrolled {
-  background: rgba(13, 0, 48, 0.75);
+  background: rgba(26, 11, 69, 0.85);
   backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(192,132,252,0.12);
+  box-shadow: 0 1px 0 rgba(192,132,252,0.15);
 }
 
 .nav-logo {
@@ -1181,8 +1181,9 @@ body {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 48px 20px;
-  border-top: 1px solid rgba(192,132,252,0.1);
+  padding: 60px 20px;
+  background: linear-gradient(to bottom, #0d052d 0%, #150a3a 100%);
+  border-top: 1px solid rgba(192,132,252,0.15);
 }
 
 .footer-stars {
@@ -1197,7 +1198,7 @@ body {
 
 .footer-text {
   font-size: 0.85rem;
-  color: rgba(192,132,252,0.5);
+  color: rgba(192,132,252,0.75);
   letter-spacing: 0.08em;
 }
 
@@ -1215,6 +1216,13 @@ body {
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .nav-logo { gap: 6px; }
+  .logo-text { font-size: 1.1rem; }
+  .logo-star { font-size: 1.2rem; }
+
+  .site-footer { padding: 40px 15px; }
+  .footer-text { font-size: 0.75rem; letter-spacing: 0.04em; }
+
   .nav-links {
     position: fixed;
     top: var(--nav-h);
