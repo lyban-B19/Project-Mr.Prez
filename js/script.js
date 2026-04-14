@@ -284,7 +284,6 @@
       "I love how you're always motivating and encouraging everyone, and alwayss whipping out new stuff to make our work even a tad bit easier.",
       "I genuinely dont think any other president out there goes to such lengths for their club members. Youuu are unrivaled and I wish you keep thriving!!",
       " I will always take great pride in knowing I have such an amazing person to call as President of my club. May Allah shower you with even more blessings and grant you even greater success ✨✨"
-
     ],
     [
       "Hello Khaled",
@@ -305,6 +304,13 @@
       "Hello Khaled,",
       "I appreciate your leadership and all the work you do to ensure that the graphic design club thrives.",
       "Thank you for leading this amazing club!"
+    ],
+    [
+      "I just wanted to take a moment to say thank you for everything you do for the club.",
+      "Even though we’ve been online and I never really got to see you in person, I could always tell how much effort you put into making everyone feel included.",
+      "You always made space for our opinions.",
+      "You’ve been such a great leader, and I’m really grateful to be part of a club where the person running it genuinely cares",
+      "Thank you for being so welcoming and supportive. It honestly made the whole experience so much better."
     ]
   ];
 
