@@ -144,7 +144,7 @@
 // ── REVEAL ON SCROLL ──────────────────────────────────────
 (function initReveal() {
   const targets = document.querySelectorAll(
-    '.stat-card, .section-header, .tribute-inner'
+    '.stat-card, .section-header, .tribute-inner, .reveal, .tool-card, .story-text-card'
   );
 
   targets.forEach(el => el.classList.add('reveal'));
@@ -779,8 +779,26 @@
   }
   tick();
 
+  // ── Star-Paws Cursor Trail ──
+  let lastPawTime = 0;
+  window.addEventListener('mousemove', (e) => {
+    if (document.body.classList.contains('meow-off')) return;
+    
+    const now = performance.now();
+    if (now - lastPawTime > 150) { // Every 150ms
+      const paw = document.createElement('div');
+      paw.className = 'cursor-paw';
+      paw.innerHTML = '🐾';
+      paw.style.left = e.clientX + 'px';
+      paw.style.top = e.clientY + 'px';
+      document.body.appendChild(paw);
+      setTimeout(() => paw.remove(), 2000);
+      lastPawTime = now;
+    }
+  });
+
   // Handle pointer states
-  const interactables = 'a, button, .stat-card, .nav-toggle, .btn';
+  const interactables = 'a, button, .stat-card, .nav-toggle, .btn, .space-cat';
   document.querySelectorAll(interactables).forEach(el => {
     el.addEventListener('mouseenter', () => dot.classList.add('hover'));
     el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
@@ -799,17 +817,146 @@
     }, { threshold: threshold || 0.15 }).observe(el.parentElement);
   }
 
-  revealOnScroll('cat-reaching', 0.25);
-  revealOnScroll('cat-reaching-mirror', 0.25);
+  revealOnScroll('cat-reaching', 0.05);
+  revealOnScroll('cat-reaching-mirror', 0.05);
 
+  // ── Meow Toggle Logic ──
+  const meowBtn = document.getElementById('meow-toggle');
+  const catReaching = document.getElementById('cat-reaching');
+  const catMirror = document.getElementById('cat-reaching-mirror');
   const peeker = document.getElementById('cat-peeker');
-  if (peeker) {
-    const tribute = document.getElementById('tribute');
-    if (tribute) {
-      new IntersectionObserver(entries => {
-        peeker.classList.toggle('visible', entries[0].isIntersecting);
-      }, { threshold: 0.3 }).observe(tribute);
+
+  let peekerInterval = null;
+
+  function spawnSparkles(count = 40) {
+    const container = document.createElement('div');
+    container.classList.add('sparkle-container');
+    document.body.appendChild(container);
+
+    const chars = ['✦', '✧', '★', '☆'];
+
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span');
+      s.classList.add('sparkle');
+      s.textContent = chars[Math.floor(Math.random() * chars.length)];
+      
+      const left = Math.random() * 100;
+      const delay = Math.random() * 2;
+      const duration = 3 + Math.random() * 3;
+      const size = 0.7 + Math.random() * 1.5;
+      const topOffset = Math.random() * 100; // Vary the start height slightly
+
+      s.style.cssText = `
+        left: ${left}%;
+        top: -${60 + topOffset}px;
+        animation-delay: ${delay}s;
+        animation-duration: ${duration}s;
+        font-size: ${size}rem;
+      `;
+      container.appendChild(s);
+    }
+
+    setTimeout(() => container.remove(), 6000);
+  }
+
+  function doRandomPeek() {
+    if (!peeker || peeker.classList.contains('cats-hidden')) return;
+
+    // Remove any previous side classes
+    peeker.classList.remove('peek-bottom', 'peek-left', 'peek-right', 'visible');
+
+    const sides = ['peek-bottom', 'peek-left', 'peek-right'];
+    const chosenSide = sides[Math.floor(Math.random() * sides.length)];
+
+    peeker.classList.add(chosenSide);
+
+    // Small delay to ensure styles are applied
+    setTimeout(() => {
+      peeker.classList.add('visible');
+      
+      // Stay for 5 seconds as requested
+      setTimeout(() => {
+        peeker.classList.remove('visible');
+      }, 5000);
+    }, 100);
+  }
+
+  function startPeekerLoop() {
+    if (peekerInterval) return;
+    // Initial peek soon
+    setTimeout(doRandomPeek, 2000);
+    // Then every 12-20 seconds
+    peekerInterval = setInterval(doRandomPeek, 12000 + Math.random() * 8000);
+  }
+
+  function stopPeekerLoop() {
+    clearInterval(peekerInterval);
+    peekerInterval = null;
+    if (peeker) peeker.classList.remove('visible');
+  }
+
+  if (meowBtn) {
+    // Pun toggling helper
+    function updatePuns(isActive) {
+      document.querySelectorAll('.cat-pun-toggle').forEach(el => {
+        el.textContent = isActive ? el.dataset.pun : el.dataset.normal;
+      });
+    }
+
+    // Check if it's active by default (it's not anymore)
+    const isActiveOnLoad = meowBtn.classList.contains('active');
+    document.body.classList.toggle('meow-off', !isActiveOnLoad);
+    updatePuns(isActiveOnLoad);
+
+    if (isActiveOnLoad) {
+      startPeekerLoop();
+    }
+
+
+    meowBtn.addEventListener('click', () => {
+      const isActive = meowBtn.classList.toggle('active');
+      
+      // Play meow sound
+      const sfx = document.getElementById('meow-sfx');
+      if (sfx) {
+        sfx.currentTime = 0;
+        sfx.play().catch(err => console.log('Audio playback prevented:', err));
+      }
+      
+      document.body.classList.toggle('meow-off', !isActive);
+      updatePuns(isActive);
+      
+      if (isActive) {
+        spawnSparkles();
+        startPeekerLoop();
+      } else {
+        stopPeekerLoop();
+      }
+    });
+  }
+
+  // ── Cosmic Purr Hearts ──
+  function spawnHearts(e) {
+    if (document.body.classList.contains('meow-off')) return;
+    const count = 3;
+    for (let i = 0; i < count; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-sparkle';
+      heart.innerHTML = '💖';
+      heart.style.left = (e.clientX + (Math.random() * 40 - 20)) + 'px';
+      heart.style.top = (e.clientY + (Math.random() * 40 - 20)) + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1500);
     }
   }
+
+  [catReaching, catMirror, peeker].forEach(cat => {
+    if (cat) {
+      cat.addEventListener('mouseenter', spawnHearts);
+      cat.addEventListener('mousedown', spawnHearts);
+    }
+  });
+
+
 
 })();
