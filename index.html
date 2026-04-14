@@ -26,6 +26,7 @@
   <!-- ░░ CINEMATIC INTRO ░░ -->
   <div id="intro-overlay" aria-modal="true" aria-label="Cinematic intro">
     <canvas id="intro-canvas"></canvas>
+
     <div class="cinema-bar cb-top"></div>
     <div class="cinema-bar cb-bottom"></div>
 
@@ -46,10 +47,14 @@
     <button id="intro-skip" aria-label="Skip intro">Skip &rarr;</button>
   </div>
 
-  <!-- ░░ STARFIELD CANVAS ░░ -->
-  <canvas id="starfield"></canvas>
+  <div id="starfield-bg">
+    <canvas id="starfield"></canvas>
+    <div id="constellation-cat" class="hidden-constellation" aria-hidden="true"></div>
+  </div>
+  <div id="particles"></div>
 
   <!-- ░░ NEBULA LAYERS ░░ -->
+
   <div class="nebula nebula-1"></div>
   <div class="nebula nebula-2"></div>
   <div class="nebula nebula-3"></div>
@@ -67,8 +72,15 @@
     <ul class="nav-links" id="nav-links">
       <li><a href="#hero" class="nav-link active">Home</a></li>
       <li><a href="#about" class="nav-link">About</a></li>
-      <li><a href="#messages" class="nav-link">Messages</a></li>
+      <li><a href="#personal-story" class="nav-link">Story</a></li>
+      <li><a href="#messages" class="nav-link cat-pun-toggle" data-normal="Messages" data-pun="Mew-ssages">Messages</a></li>
       <li><a href="#tribute" class="nav-link">Tribute</a></li>
+      <li class="meow-toggle-item">
+        <button id="meow-toggle" class="meow-btn" aria-label="Toggle celestial cats">
+          <span class="meow-icon">✦</span> Meow?
+        </button>
+      </li>
+
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
@@ -87,7 +99,7 @@
       <h1 class="hero-title">
         For
         <span class="title-highlight">Khaled M<span id="title-i-dot">i</span>ari</span>
-        <span class="hero-nickname">&mdash;&nbsp;Mr&nbsp;Prez&nbsp;&mdash;</span>
+        <span class="hero-nickname cat-pun-toggle" data-normal="— Mr Prez —" data-pun="— Mr Purr-ez —">— Mr Prez —</span>
       </h1>
 
       <p class="hero-subtitle">
@@ -96,13 +108,15 @@
       </p>
 
       <div class="hero-cta">
-        <a href="#messages" class="btn btn-primary" id="cta-messages">
+        <a href="#messages" class="btn btn-primary cat-pun-toggle" id="cta-messages" data-normal="Read Messages" data-pun="Read Mew-ssages">
           <span>Read Messages</span>
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </a>
-        <a href="#about" class="btn btn-ghost" id="cta-about">Discover More</a>
+        <a href="#about" class="btn btn-primary cat-pun-toggle" id="cta-main" data-normal="Explore More" data-pun="Ex-paw-re More">Explore More</a>
+        <a href="#personal-story" class="btn btn-ghost cat-pun-toggle" id="cta-about" data-normal="Personal Story" data-pun="Purr-sonal Story">Personal Story</a>
       </div>
     </div>
 
@@ -118,7 +132,12 @@
 
     <img src="assets/cats/celestial-reaching.png" alt="" class="space-cat cat-blend cat-reaching" id="cat-reaching" aria-hidden="true" />
     <img src="assets/cats/celestial-reaching.png" alt="" class="space-cat cat-blend cat-reaching-mirror" id="cat-reaching-mirror" aria-hidden="true" />
+
+    <div class="meowteor-bubble" aria-hidden="true">
+      <img src="images/paw-white.png" alt="" class="meowteor-cat" />
+    </div>
   </section>
+
 
   <!-- ░░ ABOUT SECTION ░░ -->
   <section class="about-section" id="about">
@@ -164,7 +183,76 @@
     </div>
   </section>
 
+  <!-- ░░ PERSONAL STORY SECTION ░░ -->
+  <section class="story-section" id="personal-story">
+    <div class="section-container">
+      <div class="reveal">
+        <div class="section-header">
+          <span class="section-tag cat-pun-toggle" data-normal="✦ A Personal Legacy" data-pun="✦ A Purr-sonal Legacy">✦ A Personal Legacy</span>
+          <h2 class="section-title cat-pun-toggle" data-normal="The Legend of Mr. Prez" data-pun="The Legend of Mr. Purr-ez">The Legend of Mr. Prez</h2>
+          <p class="section-subtitle">
+            Beyond leading, he built. Beyond guiding, he inspired.
+          </p>
+        </div>
+
+        <div class="story-content">
+          <div class="story-text-card">
+            <p>
+              Khaled Miari took the helm as President in <strong>August 2025</strong>, charting a new course for our galaxy. 
+              Under his leadership, innovation became our gravity. Beyond his guidance, he leaves behind a technical legacy of 
+              four transformative tools that reshaped our digital horizon:
+            </p>
+          </div>
+
+          <div class="tool-grid">
+            <div class="tool-card">
+              <div class="tool-glow"></div>
+              <div class="tool-icon">📜</div>
+              <h3>Certificator</h3>
+              <p>Precision in every mark.</p>
+            </div>
+            <div class="tool-card">
+              <div class="tool-glow"></div>
+              <div class="tool-icon">
+                <img src="images/syllify_logo.png" alt="Syllify Logo" class="tool-img" />
+              </div>
+              <h3>Syllify</h3>
+              <p>Streamlining our academic orbit.</p>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-glow"></div>
+              <div class="tool-icon">
+                <img src="images/verdict_logo.png" alt="YourVerdict Logo" class="tool-img" />
+              </div>
+              <h3>YourVerdict</h3>
+              <p>The voice of clarity.</p>
+            </div>
+            <div class="tool-card">
+              <div class="tool-glow"></div>
+              <div class="tool-icon">
+                <img src="images/nocap_logo.png" alt="NoCap Logo" class="tool-img" />
+              </div>
+              <h3>NoCap</h3>
+              <p>Unfiltered creativity.</p>
+            </div>
+
+          </div>
+
+          <div class="story-outro">
+            <p>
+              He remains the <strong>coolest person</strong> to ever lead this club. While his time as President orbits towards its 
+              next year with us, we wish him nothing but the very best as he continues to shine across the multiverse.
+            </p>
+            <div class="wishing-stars">✧ ✦ ✧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ░░ MESSAGES SECTION ░░ -->
+
   <section class="messages-section" id="messages">
     <div class="section-container">
 
@@ -251,7 +339,9 @@
   <!-- ░░ SPACE CATS ░░ -->
   <img src="assets/cats/hello-peek.gif" alt="" class="space-cat cat-peeker" id="cat-peeker" aria-hidden="true" />
 
+  <audio id="meow-sfx" src="assets/cats/squeaker.mpeg" preload="auto"></audio>
   <script src="js/script.js"></script>
 </body>
+
 
 </html>
