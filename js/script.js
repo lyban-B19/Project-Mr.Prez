@@ -252,6 +252,7 @@
       "you carried the weight none of us saw, and still managed to keep that sunshine energy.",
       "you ensured we were heard and seen, that we were cared for and most importantly, you made us feel like we belonged.",
       "A year from now, a decade from now, I'll still be saying: I once had a leader like Khaled.",
+      "A leader that taught me beyond what any club can offer, taught how to be human, how to be kind, how to care, how to lead with heart and mind alike.",
       "That's your legacy.",
       " ~ ~ ~ ",
       "Thank you for making GDC the rose amongst the thorns",
