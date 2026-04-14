@@ -297,7 +297,7 @@
     [
       "I wanted to thank you Khaled for being such a supportive president.",
       "It’s awesome how you appreciate everyone’s hard work and always go the extra mile for us.",
-      "Plus, keeping the club so organized and creating those AI tools has made things so much easier at RIT…",
+      "Plus, keeping the club so organized and creating those tools has made things so much easier at RIT…",
       "It's seriously impressive!"
     ],
     [
@@ -311,6 +311,19 @@
       "You always made space for our opinions.",
       "You’ve been such a great leader, and I’m really grateful to be part of a club where the person running it genuinely cares",
       "Thank you for being so welcoming and supportive. It honestly made the whole experience so much better."
+    ],
+    [
+      "Most people wouldn’t have handled half of what you did, Khaled.",
+      "You had so much on your shoulders and somehow you still made sure we were all okay first. You carried things so quietly that we almost forgot how heavy it all was.",
+      "That kind of selflessness doesn’t go unnoticed. It’s the reason some of us look up to you more than you’ll ever know.",
+      "I hope one day you get back even a fraction of what you gave us.",
+      "May Allah reward you with tenfold of everything you gave us and more."
+    ],
+    [
+      "Having worked alongside you over the past two years, it's been inspiring to see how the club has grown...especially this year under your presidency.",
+      "It's been great working with you, and I truly appreciate the direction and clarity you've brought to the club.",
+      "I'm really glad to see how many successful collaborations and events have come to life under your leadership.",
+      "Looking forward to seeing the club grow even more. ✨"
     ]
   ];
 
@@ -772,4 +785,31 @@
     el.addEventListener('mouseenter', () => dot.classList.add('hover'));
     el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
   });
+})();
+
+
+// ── SPACE CATS ───────────────────────────────────────────
+(function initSpaceCats() {
+
+  function revealOnScroll(id, threshold) {
+    const el = document.getElementById(id);
+    if (!el || !el.parentElement) return;
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) el.classList.add('visible');
+    }, { threshold: threshold || 0.15 }).observe(el.parentElement);
+  }
+
+  revealOnScroll('cat-reaching', 0.25);
+  revealOnScroll('cat-reaching-mirror', 0.25);
+
+  const peeker = document.getElementById('cat-peeker');
+  if (peeker) {
+    const tribute = document.getElementById('tribute');
+    if (tribute) {
+      new IntersectionObserver(entries => {
+        peeker.classList.toggle('visible', entries[0].isIntersecting);
+      }, { threshold: 0.3 }).observe(tribute);
+    }
+  }
+
 })();

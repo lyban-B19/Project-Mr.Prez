@@ -1001,6 +1001,7 @@ body {
   letter-spacing: 0.01em;
 }
 
+
 .caught-from {
   font-size: 0.8rem;
   letter-spacing: 0.14em;
@@ -1430,4 +1431,77 @@ body, a, button, .nav-link, .btn {
 @media (max-width: 768px) {
   #cursor-dot, #cursor-glow { display: none; }
   body, a, button { cursor: auto !important; }
+}
+
+/* ── SPACE CATS ──────────────────────────────────────────── */
+.space-cat {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+
+.cat-blend {
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 72%);
+}
+
+.cat-reaching {
+  position: absolute;
+  right: 1%;
+  bottom: 4%;
+  width: clamp(140px, 18vw, 240px);
+  z-index: 1;
+  animation: catReach 8s ease-in-out infinite;
+}
+
+.cat-reaching.visible { opacity: 0.8; }
+
+.cat-reaching-mirror {
+  position: absolute;
+  left: 1%;
+  bottom: 4%;
+  width: clamp(140px, 18vw, 240px);
+  z-index: 1;
+  animation: catReachMirror 8s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+.cat-reaching-mirror.visible { opacity: 0.8; }
+
+@keyframes catReach {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+@keyframes catReachMirror {
+  0%, 100% { transform: scaleX(-1) translateY(0); }
+  50%      { transform: scaleX(-1) translateY(-14px); }
+}
+
+.cat-peeker {
+  position: fixed;
+  bottom: -50px;
+  right: 40px;
+  width: 70px;
+  z-index: 50;
+  filter: hue-rotate(220deg) saturate(1.3)
+          drop-shadow(0 0 12px rgba(192,132,252,0.5));
+  transition: bottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.4s ease;
+}
+
+.cat-peeker.visible { bottom: -10px; opacity: 1; }
+
+@media (max-width: 768px) {
+  .cat-reaching { width: clamp(100px, 28vw, 160px); right: -1%; }
+  .cat-reaching-mirror { width: clamp(100px, 28vw, 160px); left: -1%; }
+  .cat-peeker { width: 55px; right: 20px; }
+}
+
+@media (max-width: 480px) {
+  .cat-reaching { width: 100px; bottom: 2%; }
+  .cat-reaching-mirror { width: 100px; bottom: 2%; }
+  .cat-peeker { width: 45px; right: 12px; }
 }
