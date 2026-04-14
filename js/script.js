@@ -295,6 +295,14 @@
       "Thank you"
     ],
     [
+      "Khaled, ive seen you jump into the abandoned position of presidency and since that day all you wanted moving on was for the club's benefit.",
+      "you were one of the few people who took it very seriously since day one, and put so much commitment and effort into it. even during the few months in summer when you were still the vice president.",
+      "you didn't take a break, you jumped to planning. and you put so much love and dedication into every though and decision regarding the club.",
+      "im not the only one who felt pride in seeing the club grow under your leadership, you have read what jillian and leen and sabrina said as well. even emaan kept keeping up with the club after she graduated and completely left uni, sharing how impressed she is about the club's progress after designathon.",
+      "many students appreciate the club and enjoy attending it's events and reading the comics and magazines. you single handedly carried this club from under the ground to above the sky. you might think that you efforts were not appreciated, and they may have not been in the eyes of those who dont care. those who didnt join the club for passion.",
+      "but believe me, in the eyes of every student who joined this club with passion, you are a hero. in the eyes of everyone who is writing you a message you are batman. shut down those who dont care, because they dont matter. and amplify the voices of those who do appreciate you. even if little, they care alot, and they truly love your leadership"
+    ],
+    [
       "I wanted to thank you Khaled for being such a supportive president.",
       "It’s awesome how you appreciate everyone’s hard work and always go the extra mile for us.",
       "Plus, keeping the club so organized and creating those tools has made things so much easier at RIT…",
