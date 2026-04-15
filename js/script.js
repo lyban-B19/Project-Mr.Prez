@@ -345,6 +345,12 @@
       "This",
       "Is a situtaion",
       "Where more is less."
+    ],
+    [
+      "I just wanted to say I really appreciate how accommodating you've been throughout the club.",
+      "You never made me feel overburdened or uncomfortable, and I respect that you've always been mindful of my personal space.",
+      "It made the experience a lot better for me, so thank you for that.",
+      "Also the candy was a nice touch, not gonna lie 🍬"
     ]
   ];
 
