@@ -167,7 +167,7 @@
 // ── COUNTER ANIMATION ─────────────────────────────────────
 (function initCounters() {
   // Dynamic "Days of Leadership" calculation: Aug 1, 2025 - Current
-  const start = new Date('2025-08-01T00:00:00');
+  const start = new Date('2025-07-16T00:00:00');
   const now = new Date();
 
   // Normalize both to midnight to count pure days
