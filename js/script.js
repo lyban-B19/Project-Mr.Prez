@@ -855,7 +855,7 @@
 
   let peekerInterval = null;
 
-  function spawnSparkles(count = 40) {
+  window.spawnSparkles = function (count = 40) {
     const container = document.createElement('div');
     container.classList.add('sparkle-container');
     document.body.appendChild(container);
@@ -977,6 +977,7 @@
     }
   }
 
+
   [catReaching, catMirror, peeker].forEach(cat => {
     if (cat) {
       cat.addEventListener('mouseenter', spawnHearts);
@@ -984,6 +985,84 @@
     }
   });
 
-
-
 })();
+
+
+// ── STRAWBERRY REVEAL LOGIC ─────────────────────────────
+(function initStrawberryReveal() {
+  const dots = document.querySelectorAll('.sb-dot');
+  const messageEl = document.getElementById('sb-message');
+  const words = ['Very', 'Berry', 'Strawberry'];
+  const revealed = [false, false, false];
+  let complete = false;
+
+  function spawnStrawberryRain() {
+    const count = 30;
+    const body = document.body;
+    for (let i = 0; i < count; i++) {
+      const berry = document.createElement('div');
+      berry.className = 'strawberry-drop';
+      berry.textContent = '🍓';
+      berry.style.left = Math.random() * 100 + 'vw';
+      berry.style.animationDuration = (2 + Math.random() * 3) + 's';
+      berry.style.animationDelay = (Math.random() * 2) + 's';
+      berry.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+      body.appendChild(berry);
+      setTimeout(() => berry.remove(), 6000);
+    }
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const hint = document.querySelector('.sb-hint');
+      if (hint) hint.style.opacity = '0';
+      
+      const idx = parseInt(dot.dataset.index);
+      
+      if (idx > 0 && !revealed[idx - 1]) {
+        dot.classList.add('shake');
+        setTimeout(() => dot.classList.remove('shake'), 400);
+        return;
+      }
+
+      if (!revealed[idx]) {
+        revealed[idx] = true;
+        dot.classList.add('active');
+        
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'sb-word';
+        wordSpan.textContent = words[idx];
+        messageEl.appendChild(wordSpan);
+        
+        // Trigger smooth reveal
+        requestAnimationFrame(() => {
+          wordSpan.classList.add('revealed');
+        });
+
+        if (revealed.every(r => r)) {
+          complete = true;
+          // Delay the "dance" to allow the last word to settle
+          setTimeout(() => {
+            messageEl.classList.add('complete');
+            spawnStrawberryRain();
+          }, 800);
+        }
+
+        if (!document.body.classList.contains('meow-off')) {
+          if (typeof window.spawnSparkles === 'function') {
+            window.spawnSparkles(idx === 2 ? 40 : 10);
+          }
+          const sfx = document.getElementById('meow-sfx');
+          if (sfx) {
+            sfx.currentTime = 0;
+            sfx.play().catch(() => {});
+          }
+        }
+      }
+    });
+  });
+})();
+
+
+
+
