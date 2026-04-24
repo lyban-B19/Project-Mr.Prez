@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Secret Research: The Moo Moo Terminator." />
+    <title>Moo Moo Terminator &mdash; Bovine Research Lab</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500&family=Outfit:wght@600;700&family=Playfair+Display:ital,wght@1,400;1,700&display=swap"
+        rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="moomoo-body">
+    <!-- ░░ CUSTOM CURSOR ░░ -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-glow"></div>
+
+    <div id="starfield-bg">
+        <canvas id="starfield"></canvas>
+    </div>
+    <div id="particles"></div>
+
+    <!-- ░░ NAVIGATION ░░ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">
+            <span class="logo-star">✦</span>
+            <span class="logo-text">For Our President</span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html#hero" class="nav-link">Home</a></li>
+            <li><a href="index.html#about" class="nav-link">About</a></li>
+            <li><a href="index.html#messages" class="nav-link">Messages</a></li>
+            <li><a href="index.html#tribute" class="nav-link">Tribute</a></li>
+            <li class="moo-toggle-item">
+                <a href="index.html" class="meow-btn" style="border-color: rgba(192, 132, 252, 0.4);">
+                    <span class="meow-icon">✦</span> Return?
+                </a>
+            </li>
+        </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ░░ MOO MOO TERMINATOR CONTENT ░░ -->
+    <main class="moomoo-page">
+        <div class="scroll-prompt">
+            Scroll down if you dare
+        </div>
+        
+        <div class="section-header">
+            <span class="section-tag" style="color: #ffe600; border-color: rgba(255, 230, 0, 0.3);">✦ Secret Mission</span>
+            <h1 class="hero-title" style="font-size: clamp(2.2rem, 8vw, 4rem);">
+                The Legend of 
+                <span class="title-highlight" style="font-size: clamp(3rem, 12vw, 6rem); color: #ffe600; text-shadow: 0 0 30px rgba(255, 230, 0, 0.4);">Moo Moo</span>
+                <span class="hero-nickname" style="color: rgba(255, 230, 0, 0.6);">— Terminator —</span>
+            </h1>
+            <p class="section-subtitle">Advanced Bovine Optimization System. Legend says no cow survived the process.</p>
+        </div>
+
+        <div class="terminator-chamber" id="terminator-chamber">
+            <div class="chamber-glass">
+                <img src="images/moo.png" alt="Minecraft Cow" class="chamber-img" id="chamber-img" />
+            </div>
+
+            <div class="lever-outer">
+                <p style="font-size: 0.7rem; color: rgba(255, 230, 0, 0.4); margin-bottom: 20px; letter-spacing: 0.3em; text-transform: uppercase;">Engagement Lever</p>
+                <div class="lever-container" id="terminator-lever">
+                    <div class="lever-base"></div>
+                    <div class="lever-handle"></div>
+                </div>
+            </div>
+            
+            <div id="nom-container" style="margin-top: 30px; height: 50px;">
+                <button id="nom-btn" class="meow-btn btn" style="display: none; border-color: #ffe600; color: #ffe600; background: rgba(255, 230, 0, 0.05); cursor: pointer; padding: 10px 25px;">
+                    🍴 Nom Nom?
+                </button>
+            </div>
+
+            <p id="processing-status" style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: rgba(255,255,255,0.4); min-height: 1.5em;"></p>
+        </div>
+    </main>
+
+    <!-- ░░ MINECRAFT ACHIEVEMENT ░░ -->
+    <div class="minecraft-toast" id="achievement-toast">
+        <div class="toast-icon">
+            <img src="images/beef.webp" alt="" width="32" height="32" />
+        </div>
+        <div class="toast-content">
+            <h4>Achievement Unlocked!</h4>
+            <p>The Terminator</p>
+        </div>
+    </div>
+
+    <!-- ░░ FOOTER ░░ -->
+    <footer class="site-footer">
+        <div class="footer-stars" aria-hidden="true">
+            <span style="color: #ffe600;">✦</span><span style="color: #ffe600;">✧</span><span style="color: #ffe600;">✦</span>
+        </div>
+        <p class="footer-text">Project Mr Prez &mdash; Official Secret Documentation 2026</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // ── MOO MOO TERMINATOR LOGIC ──
+        (function() {
+            const lever = document.getElementById('terminator-lever');
+            const chamber = document.getElementById('terminator-chamber');
+            const img = document.getElementById('chamber-img');
+            const status = document.getElementById('processing-status');
+            const toast = document.getElementById('achievement-toast');
+            const nomBtn = document.getElementById('nom-btn');
+            
+            let processing = false;
+
+            // Audio setup
+            const ding = new Audio('https://www.myinstants.com/media/sounds/level-up-minecraft.mp3');
+            const sizzle = new Audio('https://www.myinstants.com/media/sounds/minecraft-fire-burning.mp3');
+
+            nomBtn.addEventListener('click', () => {
+                if (typeof window.spawnSparkles === 'function') {
+                    window.spawnSparkles(40);
+                }
+                nomBtn.style.display = 'none';
+                status.textContent = "Delicious. Chamber disinfecting...";
+                
+                setTimeout(() => {
+                    img.style.opacity = '0';
+                    setTimeout(() => {
+                        img.src = 'images/moo.png';
+                        img.style.opacity = '1';
+                        status.textContent = "Ready for next subject.";
+                        lever.classList.remove('pulled');
+                        processing = false;
+                    }, 500);
+                }, 1500);
+            });
+
+            lever.addEventListener('click', () => {
+                if (processing) return;
+                processing = true;
+
+                // Pull lever
+                lever.classList.add('pulled');
+                chamber.classList.add('processing');
+                status.textContent = "Commencing Optimization...";
+                
+                // Switch to Fire
+                setTimeout(() => {
+                    img.style.opacity = '0';
+                    setTimeout(() => {
+                        img.src = 'images/fire.gif';
+                        img.style.opacity = '1';
+                        sizzle.play().catch(() => {});
+                    }, 300);
+                }, 400);
+
+                // Wait 5 seconds
+                setTimeout(() => {
+                    sizzle.pause();
+                    sizzle.currentTime = 0;
+                    
+                    img.style.opacity = '0';
+                    setTimeout(() => {
+                        // Switch to Cooked Beef
+                        img.src = 'images/beef.webp';
+                        img.style.opacity = '1';
+                        chamber.classList.remove('processing');
+                        status.textContent = "Process Complete. Result: 100% Efficiency.";
+                        
+                        // Show Nom Nom button
+                        nomBtn.style.display = 'inline-block';
+                        
+                        // Show Achievement
+                        toast.classList.add('show');
+                        ding.play().catch(() => {});
+
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                        }, 4000);
+                    }, 300);
+                }, 5400); // 400ms + 5000ms
+            });
+        })();
+    </script>
+</body>
+
+</html>

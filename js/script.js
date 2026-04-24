@@ -99,15 +99,19 @@
   const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
+  
+  if (!navbar || !navLinks) return;
   const links = navLinks.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  navToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-  });
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+  }
 
   links.forEach(link => {
     link.addEventListener('click', () => navLinks.classList.remove('open'));
@@ -115,6 +119,8 @@
 
   // Active nav link tracking
   const sections = document.querySelectorAll('section[id]');
+  if (sections.length === 0) return;
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -132,6 +138,8 @@
 // ── SCROLL INDICATOR FADE ─────────────────────────────────
 (function initScrollIndicator() {
   const indicator = document.getElementById('scroll-indicator');
+  if (!indicator) return;
+
   window.addEventListener('scroll', () => {
     const gone = window.scrollY > 60;
     indicator.style.opacity = gone ? '0' : '1';
@@ -166,21 +174,13 @@
 
 // ── COUNTER ANIMATION ─────────────────────────────────────
 (function initCounters() {
-  // Dynamic "Days of Leadership" calculation: Aug 1, 2025 - Current
-  const start = new Date('2025-07-16T00:00:00');
-  const now = new Date();
-
-  // Normalize both to midnight to count pure days
-  const d1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  const diffTime = Math.max(0, d2 - d1);
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(Math.max(0, new Date() - new Date('2025-07-16T00:00:00')) / (1000 * 60 * 60 * 24));
 
   const leadCounter = document.querySelector('#stat-1 .stat-number');
   if (leadCounter) leadCounter.dataset.target = diffDays;
 
   const counters = document.querySelectorAll('.stat-number[data-target]');
+  if (counters.length === 0) return;
 
   function animateCounter(el) {
     const target = +el.dataset.target;
@@ -194,7 +194,6 @@
       el.textContent = Math.round(eased * target);
       if (progress < 1) requestAnimationFrame(step);
     }
-
     requestAnimationFrame(step);
   }
 
@@ -229,10 +228,6 @@
 
 // ── STAR CATCHER ──────────────────────────────────────────
 (function initStarCatcher() {
-
-  // Hard-coded anonymous messages (shuffled each visit)
-  // Each message is an ARRAY of paragraph strings.
-  // Add as many paragraphs as you like — each becomes its own <p> block.
   const MESSAGES = [
     [
       "Hey Khaled!",
@@ -371,6 +366,8 @@
 
   // Reveal the widget when the section scrolls into view
   const section = document.getElementById('messages');
+  if (!section || !catcher) return;
+  
   const sectionObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
       setTimeout(() => catcher.classList.add('ready'), 350);
@@ -382,20 +379,14 @@
   let typingSession = 0;
 
   // ── Cinematic Decode Effect ──
-  // Each paragraph types out sequentially into its own element.
-  // The final paragraph gets the accent color class.
   function decodeText(container, paragraphs) {
     container.innerHTML = '';
     const currentSession = ++typingSession;
-
-    // The scrollable ancestor is .caught-display
     const scrollPane = container.closest('.caught-display');
-
     let pIdx = 0;
 
     function typeNextParagraph() {
       if (pIdx >= paragraphs.length || currentSession !== typingSession) return;
-
       const isLast = pIdx === paragraphs.length - 1;
       const el = document.createElement('p');
       el.classList.add(isLast ? 'caught-para-last' : 'caught-para');
@@ -409,7 +400,6 @@
 
       function type() {
         if (currentSession !== typingSession) return;
-
         if (charIdx < text.length) {
           el.classList.add('typing');
           const char = text.charAt(charIdx++);
@@ -422,12 +412,9 @@
           } else {
             el.appendChild(document.createTextNode(char));
           }
-
-          // Smoothly chase the scroll bottom
           if (scrollPane) {
             const targetScroll = scrollPane.scrollHeight - scrollPane.clientHeight;
             if (scrollPane.scrollTop < targetScroll) {
-              // Add a tiny bit of "chase" logic for smoothness
               scrollPane.scrollTop += (targetScroll - scrollPane.scrollTop) * 0.15;
             }
           }
@@ -435,64 +422,43 @@
         } else {
           el.classList.remove('typing');
           pIdx++;
-          // Small pause between paragraphs
           setTimeout(typeNextParagraph, 450);
         }
       }
       type();
     }
-
     typeNextParagraph();
   }
 
-  // ── Launch a comet straight down the sky stage ──
   function launchComet() {
     const comet = document.createElement('div');
     comet.classList.add('comet');
-
-    // Random horizontal position, but falls dead straight
-    const startX = 15 + Math.random() * 70;         // 15–85% horizontal
+    const startX = 15 + Math.random() * 70;
     const fallDist = (skyStage.offsetHeight || 480) + 160;
-
     comet.style.left = `${startX}%`;
     comet.style.setProperty('--fall-dist', `${fallDist}px`);
-
     skyStage.appendChild(comet);
     return comet;
   }
 
-  // ── Button click handler ──
   catchBtn.addEventListener('click', () => {
     if (busy || index >= pool.length) return;
     busy = true;
     catchBtn.disabled = true;
-
-    // Hide any previous message instantly
     caughtCard.classList.remove('show');
-
-    // Fire the star
     const comet = launchComet();
-
-    // After comet animation (~1.15 s) → impact + message
     setTimeout(() => {
       comet.remove();
-
-      // Cinematic vibration + impact burst
       skyStage.classList.add('impact-vibration');
       impactGlow.classList.add('burst');
-
       setTimeout(() => {
         skyStage.classList.remove('impact-vibration');
         impactGlow.classList.remove('burst');
       }, 800);
-
-      // Trigger decoding effect + card bloom
       setTimeout(() => {
         caughtCard.classList.add('show');
         decodeText(caughtText, pool[index]);
         index++;
-
-        // Update controls after card has partially bloomed
         setTimeout(() => {
           if (index >= pool.length) {
             catchLabel.textContent = "That's all the stars for tonight";
@@ -506,12 +472,9 @@
           }
           busy = false;
         }, 350);
-
-      }, 150); // tiny delay so burst and bloom feel synchronised
-
-    }, 1130); // must match cometFall CSS duration (1.1s)
+      }, 150);
+    }, 1130);
   });
-
 })();
 
 
@@ -519,15 +482,14 @@
 (function initIntro() {
   const overlay = document.getElementById('intro-overlay');
   if (!overlay) return;
-
   const canvas = document.getElementById('intro-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const cbTop = overlay.querySelector('.cb-top');
   const cbBottom = overlay.querySelector('.cb-bottom');
   const invLines = overlay.querySelectorAll('.invite-line');
   const warpMsgs = overlay.querySelectorAll('.warp-msg');
   const skipBtn = document.getElementById('intro-skip');
-
   let W, H, animating = true, raf;
   let warpSpeed = 0;
   let stars = [];
@@ -554,18 +516,14 @@
   }
   buildStars();
 
-  // ── Render loop ──
   function draw() {
-    // Slow, dreamy fade — long soft trails at peak
     const fade = 0.18 + warpSpeed * 0.28;
     ctx.fillStyle = `rgba(2, 0, 12, ${fade})`;
     ctx.fillRect(0, 0, W, H);
-
     stars.forEach(s => {
       const vel = s.spd * (1 + warpSpeed * 7);
       s.y -= vel;
       if (s.y < -4) { s.y = H + 4; s.x = Math.random() * W; }
-
       const trail = vel * warpSpeed * 1.8;
       if (trail > 2) {
         const g = ctx.createLinearGradient(s.x, s.y + trail, s.x, s.y);
@@ -585,12 +543,10 @@
         ctx.fill();
       }
     });
-
     if (animating) raf = requestAnimationFrame(draw);
   }
   draw();
 
-  // ── Helpers ──
   const wait = ms => new Promise(r => setTimeout(r, ms));
 
   function lerpWarp(to, ms) {
@@ -614,36 +570,26 @@
     });
   }
 
-  // ── Falling star → bloom transition ──
   function runFallingStarTransition(targetX, targetY) {
     return new Promise(r => {
       let phase = 'blackout';
       let t0 = performance.now();
       let starY = -30;
       let bloomR = 0;
-
       function step(now) {
         const elapsed = now - t0;
-
         if (phase === 'blackout') {
-          // Fade to full black over 1.4s
           const p = Math.min(elapsed / 1400, 1);
           ctx.fillStyle = `rgba(2, 0, 12, ${(0.05 + p * 0.95).toFixed(3)})`;
           ctx.fillRect(0, 0, W, H);
           if (p >= 1) { phase = 'falling'; t0 = now; }
           requestAnimationFrame(step);
-
         } else if (phase === 'falling') {
-          // Gentle fall over 4.4s with ease-in-out
           const p = Math.min(elapsed / 4400, 1);
           const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
           starY = -30 + (targetY + 30) * e;
-
-          // Soft persist — draws gentle trail
           ctx.fillStyle = 'rgba(2, 0, 12, 0.18)';
           ctx.fillRect(0, 0, W, H);
-
-          // Wispy tail above the star
           const tail = ctx.createLinearGradient(targetX, starY - 60, targetX, starY);
           tail.addColorStop(0, 'transparent');
           tail.addColorStop(1, 'rgba(200,170,255,0.22)');
@@ -653,8 +599,6 @@
           ctx.moveTo(targetX, starY - 60);
           ctx.lineTo(targetX, starY);
           ctx.stroke();
-
-          // Soft outer glow
           const glow = ctx.createRadialGradient(targetX, starY, 0, targetX, starY, 24);
           glow.addColorStop(0, 'rgba(255,255,255,0.88)');
           glow.addColorStop(0.35, 'rgba(205,170,255,0.45)');
@@ -663,26 +607,19 @@
           ctx.beginPath();
           ctx.arc(targetX, starY, 24, 0, Math.PI * 2);
           ctx.fill();
-
-          // Bright pinpoint core
           ctx.fillStyle = 'rgba(255,255,255,0.97)';
           ctx.beginPath();
           ctx.arc(targetX, starY, 2, 0, Math.PI * 2);
           ctx.fill();
-
           if (p >= 1) { phase = 'bloom'; t0 = now; bloomR = 0; }
           requestAnimationFrame(step);
-
         } else if (phase === 'bloom') {
-          // Soft radial bloom expands & fades over 1.5s
           const p = Math.min(elapsed / 1500, 1);
           const eased = 1 - Math.pow(1 - p, 2);
           bloomR = eased * Math.hypot(W, H) * 0.9;
           const bA = 1 - p;
-
           ctx.fillStyle = `rgba(2, 0, 12, ${(0.55 + p * 0.35).toFixed(2)})`;
           ctx.fillRect(0, 0, W, H);
-
           const bloom = ctx.createRadialGradient(targetX, targetY, 0, targetX, targetY, bloomR);
           bloom.addColorStop(0, `rgba(225,195,255,${(bA * 0.9).toFixed(2)})`);
           bloom.addColorStop(0.3, `rgba(150,100,225,${(bA * 0.45).toFixed(2)})`);
@@ -692,7 +629,6 @@
           ctx.beginPath();
           ctx.arc(targetX, targetY, bloomR, 0, Math.PI * 2);
           ctx.fill();
-
           if (p >= 1) r();
           else requestAnimationFrame(step);
         }
@@ -701,26 +637,20 @@
     });
   }
 
-  // ── Stop draw loop ──
   function stopDrawLoop() {
     animating = false;
     cancelAnimationFrame(raf);
   }
 
-  // ── Fade overlay, page blooms through ──
   function fadeOutOverlay(isTimelineEnd = false) {
-    // If skip was pressed, don't let the timeline call this again
     if (isTimelineEnd && introSkipped) return;
-
     overlay.style.transition = 'opacity 1.5s ease';
     overlay.style.opacity = '0';
     document.body.style.overflow = '';
-    // Force top of page on reveal
     window.scrollTo(0, 0);
     setTimeout(() => overlay.remove(), 1550);
   }
 
-  // Skip — instant exit
   skipBtn.addEventListener('click', () => {
     introSkipped = true;
     stopDrawLoop();
@@ -728,48 +658,30 @@
   });
   document.body.style.overflow = 'hidden';
 
-  // ── Cinematic timeline ──
   (async () => {
-    // Phase 1 — invitation fades in, staggered
     await wait(500); if (introSkipped) return;
     invLines[0].classList.add('visible');
     await wait(620); if (introSkipped) return;
     invLines[1].classList.add('visible');
-
-    // Letterbox bars + gentle drift
     await wait(3300); if (introSkipped) return;
     cbTop.classList.add('open');
     cbBottom.classList.add('open');
     lerpWarp(0.12, 1000);
-
-    // Invitation fades out
     await wait(2950); if (introSkipped) return;
     invLines.forEach(l => l.classList.remove('visible'));
     await wait(600); if (introSkipped) return;
-
-    // Warp rises to a soft cinematic drift
     lerpWarp(0.48, 3000);
     await wait(3000); if (introSkipped) return;
-
-    // Four cinematic messages glow in
     if (!introSkipped) await showMsg(warpMsgs[0], 3400);
     if (!introSkipped) await showMsg(warpMsgs[1], 3400);
     if (!introSkipped) await showMsg(warpMsgs[2], 3250);
     if (!introSkipped) await showMsg(warpMsgs[3], 3250);
-
-    // Warp eases back to stillness
     await wait(350); if (introSkipped) return;
     lerpWarp(0, 1100);
     await wait(2900); if (introSkipped) return;
-
-    // Hand off to falling-star transition
     stopDrawLoop();
-
-    // Land exactly at screen centre
     const dotX = W / 2;
     const dotY = H / 2;
-
-    // The star falls → blooms → page reveals
     if (!introSkipped) await runFallingStarTransition(dotX, dotY);
     fadeOutOverlay(true);
   })();
@@ -782,6 +694,8 @@
 (function initCustomCursor() {
   const dot = document.getElementById('cursor-dot');
   const glow = document.getElementById('cursor-glow');
+  if (!dot || !glow) return;
+
   let mouseX = 0, mouseY = 0;
   let dotX = 0, dotY = 0;
   let glowX = 0, glowY = 0;
@@ -792,27 +706,21 @@
   });
 
   function tick() {
-    // Smooth lerp for dot
     dotX += (mouseX - dotX) * 0.25;
     dotY += (mouseY - dotY) * 0.25;
     dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
-
-    // Slower lerp for glow to create "lagging" trail effect
     glowX += (mouseX - glowX) * 0.08;
     glowY += (mouseY - glowY) * 0.08;
     glow.style.transform = `translate(${glowX}px, ${glowY}px)`;
-
     requestAnimationFrame(tick);
   }
   tick();
 
-  // ── Star-Paws Cursor Trail ──
   let lastPawTime = 0;
   window.addEventListener('mousemove', (e) => {
     if (document.body.classList.contains('meow-off')) return;
-
     const now = performance.now();
-    if (now - lastPawTime > 150) { // Every 150ms
+    if (now - lastPawTime > 150) {
       const paw = document.createElement('div');
       paw.className = 'cursor-paw';
       paw.innerHTML = '🐾';
@@ -824,18 +732,23 @@
     }
   });
 
-  // Handle pointer states
-  const interactables = 'a, button, .stat-card, .nav-toggle, .btn, .space-cat';
-  document.querySelectorAll(interactables).forEach(el => {
-    el.addEventListener('mouseenter', () => dot.classList.add('hover'));
-    el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
-  });
+  const setupHover = () => {
+    const interactables = 'a, button, .stat-card, .nav-toggle, .btn, .space-cat, input, label, .lever-container';
+    document.querySelectorAll(interactables).forEach(el => {
+      if (!el.dataset.cursorAttached) {
+        el.dataset.cursorAttached = 'true';
+        el.addEventListener('mouseenter', () => dot.classList.add('hover'));
+        el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
+      }
+    });
+  };
+  setupHover();
+  setInterval(setupHover, 1000);
 })();
 
 
 // ── SPACE CATS ───────────────────────────────────────────
 (function initSpaceCats() {
-
   function revealOnScroll(id, threshold) {
     const el = document.getElementById(id);
     if (!el || !el.parentElement) return;
@@ -843,76 +756,50 @@
       if (entries[0].isIntersecting) el.classList.add('visible');
     }, { threshold: threshold || 0.15 }).observe(el.parentElement);
   }
-
   revealOnScroll('cat-reaching', 0.05);
   revealOnScroll('cat-reaching-mirror', 0.05);
 
-  // ── Meow Toggle Logic ──
   const meowBtn = document.getElementById('meow-toggle');
   const catReaching = document.getElementById('cat-reaching');
   const catMirror = document.getElementById('cat-reaching-mirror');
   const peeker = document.getElementById('cat-peeker');
-
   let peekerInterval = null;
 
   window.spawnSparkles = function (count = 40) {
     const container = document.createElement('div');
     container.classList.add('sparkle-container');
     document.body.appendChild(container);
-
     const chars = ['✦', '✧', '★', '☆'];
-
     for (let i = 0; i < count; i++) {
       const s = document.createElement('span');
       s.classList.add('sparkle');
       s.textContent = chars[Math.floor(Math.random() * chars.length)];
-
       const left = Math.random() * 100;
       const delay = Math.random() * 2;
       const duration = 3 + Math.random() * 3;
       const size = 0.7 + Math.random() * 1.5;
-      const topOffset = Math.random() * 100; // Vary the start height slightly
-
-      s.style.cssText = `
-        left: ${left}%;
-        top: -${60 + topOffset}px;
-        animation-delay: ${delay}s;
-        animation-duration: ${duration}s;
-        font-size: ${size}rem;
-      `;
+      const topOffset = Math.random() * 100;
+      s.style.cssText = `left: ${left}%; top: -${60 + topOffset}px; animation-delay: ${delay}s; animation-duration: ${duration}s; font-size: ${size}rem;`;
       container.appendChild(s);
     }
-
     setTimeout(() => container.remove(), 6000);
   }
 
   function doRandomPeek() {
     if (!peeker || peeker.classList.contains('cats-hidden')) return;
-
-    // Remove any previous side classes
     peeker.classList.remove('peek-bottom', 'peek-left', 'peek-right', 'visible');
-
     const sides = ['peek-bottom', 'peek-left', 'peek-right'];
     const chosenSide = sides[Math.floor(Math.random() * sides.length)];
-
     peeker.classList.add(chosenSide);
-
-    // Small delay to ensure styles are applied
     setTimeout(() => {
       peeker.classList.add('visible');
-
-      // Stay for 5 seconds as requested
-      setTimeout(() => {
-        peeker.classList.remove('visible');
-      }, 5000);
+      setTimeout(() => peeker.classList.remove('visible'), 5000);
     }, 100);
   }
 
   function startPeekerLoop() {
     if (peekerInterval) return;
-    // Initial peek soon
     setTimeout(doRandomPeek, 2000);
-    // Then every 12-20 seconds
     peekerInterval = setInterval(doRandomPeek, 12000 + Math.random() * 8000);
   }
 
@@ -923,50 +810,29 @@
   }
 
   if (meowBtn) {
-    // Pun toggling helper
     function updatePuns(isActive) {
       document.querySelectorAll('.cat-pun-toggle').forEach(el => {
         el.textContent = isActive ? el.dataset.pun : el.dataset.normal;
       });
     }
-
-    // Check if it's active by default (it's not anymore)
     const isActiveOnLoad = meowBtn.classList.contains('active');
     document.body.classList.toggle('meow-off', !isActiveOnLoad);
     updatePuns(isActiveOnLoad);
-
-    if (isActiveOnLoad) {
-      startPeekerLoop();
-    }
-
+    if (isActiveOnLoad) startPeekerLoop();
 
     meowBtn.addEventListener('click', () => {
       const isActive = meowBtn.classList.toggle('active');
-
-      // Play meow sound
       const sfx = document.getElementById('meow-sfx');
-      if (sfx) {
-        sfx.currentTime = 0;
-        sfx.play().catch(err => console.log('Audio playback prevented:', err));
-      }
-
+      if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
       document.body.classList.toggle('meow-off', !isActive);
       updatePuns(isActive);
-
-      if (isActive) {
-        spawnSparkles();
-        startPeekerLoop();
-      } else {
-        stopPeekerLoop();
-      }
+      if (isActive) { spawnSparkles(); startPeekerLoop(); } else { stopPeekerLoop(); }
     });
   }
 
-  // ── Cosmic Purr Hearts ──
   function spawnHearts(e) {
     if (document.body.classList.contains('meow-off')) return;
-    const count = 3;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < 3; i++) {
       const heart = document.createElement('div');
       heart.className = 'heart-sparkle';
       heart.innerHTML = '💖';
@@ -977,14 +843,12 @@
     }
   }
 
-
   [catReaching, catMirror, peeker].forEach(cat => {
     if (cat) {
       cat.addEventListener('mouseenter', spawnHearts);
       cat.addEventListener('mousedown', spawnHearts);
     }
   });
-
 })();
 
 
@@ -994,12 +858,9 @@
   const messageEl = document.getElementById('sb-message');
   const words = ['Very', 'Berry', 'Strawberry'];
   const revealed = [false, false, false];
-  let complete = false;
 
   function spawnStrawberryRain() {
-    const count = 30;
-    const body = document.body;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < 30; i++) {
       const berry = document.createElement('div');
       berry.className = 'strawberry-drop';
       berry.textContent = '🍓';
@@ -1007,7 +868,7 @@
       berry.style.animationDuration = (2 + Math.random() * 3) + 's';
       berry.style.animationDelay = (Math.random() * 2) + 's';
       berry.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
-      body.appendChild(berry);
+      document.body.appendChild(berry);
       setTimeout(() => berry.remove(), 6000);
     }
   }
@@ -1016,47 +877,27 @@
     dot.addEventListener('click', () => {
       const hint = document.querySelector('.sb-hint');
       if (hint) hint.style.opacity = '0';
-      
       const idx = parseInt(dot.dataset.index);
-      
       if (idx > 0 && !revealed[idx - 1]) {
         dot.classList.add('shake');
         setTimeout(() => dot.classList.remove('shake'), 400);
         return;
       }
-
       if (!revealed[idx]) {
         revealed[idx] = true;
         dot.classList.add('active');
-        
         const wordSpan = document.createElement('span');
         wordSpan.className = 'sb-word';
         wordSpan.textContent = words[idx];
         messageEl.appendChild(wordSpan);
-        
-        // Trigger smooth reveal
-        requestAnimationFrame(() => {
-          wordSpan.classList.add('revealed');
-        });
-
+        requestAnimationFrame(() => wordSpan.classList.add('revealed'));
         if (revealed.every(r => r)) {
-          complete = true;
-          // Delay the "dance" to allow the last word to settle
-          setTimeout(() => {
-            messageEl.classList.add('complete');
-            spawnStrawberryRain();
-          }, 800);
+          setTimeout(() => { messageEl.classList.add('complete'); spawnStrawberryRain(); }, 800);
         }
-
         if (!document.body.classList.contains('meow-off')) {
-          if (typeof window.spawnSparkles === 'function') {
-            window.spawnSparkles(idx === 2 ? 40 : 10);
-          }
+          if (typeof window.spawnSparkles === 'function') window.spawnSparkles(idx === 2 ? 40 : 10);
           const sfx = document.getElementById('meow-sfx');
-          if (sfx) {
-            sfx.currentTime = 0;
-            sfx.play().catch(() => {});
-          }
+          if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
         }
       }
     });
@@ -1064,5 +905,27 @@
 })();
 
 
+// ── PAGE TRANSITIONS ───────────────────────────────────────
+(function initPageTransitions() {
+  const overlay = document.getElementById('intro-overlay');
+  if (!overlay) {
+    document.body.classList.add('fade-in');
+    // Remove the class after animation finishes so 'fixed' positioning isn't broken by transforms
+    setTimeout(() => document.body.classList.remove('fade-in'), 1100);
+  }
 
-
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (e.ctrlKey || e.metaKey || link.hasAttribute('target')) return;
+      try {
+        const url = new URL(link.href, window.location.origin);
+        if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
+          e.preventDefault();
+          document.body.classList.remove('fade-in'); 
+          document.body.classList.add('fade-out');
+          setTimeout(() => { window.location.href = link.href; }, 700); 
+        }
+      } catch (err) {}
+    });
+  });
+})();
